@@ -93,7 +93,7 @@ const BirthdayCountdown = () => {
           ))}
         </div>
         <div className="mt-8 max-w-full">
-          <img
+        <img
             src={`${process.env.PUBLIC_URL}/Day1Pic.jpg`}
             alt="Birthday celebration"
             className="mx-auto w-[300px] rounded-lg border-none"
@@ -105,6 +105,7 @@ const BirthdayCountdown = () => {
 }
 
 function BirthdayCountdownWrapper() {
+  console.log("Rendering BirthdayCountdownWrapper");
   return (
     <FollowerPointerCard
       title={
@@ -118,31 +119,31 @@ function BirthdayCountdownWrapper() {
         <BirthdayCountdown />
       </AuroraBackground>
     </FollowerPointerCard>
-  )
+  );
 }
 
 const blogContent = {
-  slug: 'amazing-tailwindcss-grid-layouts',
-  author: 'Interested Anonymous Critter!',
-  date: '28th March, 2023',
-  title: 'Amazing Tailwindcss Grid Layout Examples',
-  description:
-    'Grids are cool, but Tailwindcss grids are cooler. In this article, we will learn how to create amazing Grid layouts with Tailwindcs grid and React.',
-  image: '/demo/thumbnail.png',
-  authorAvatar: '/manu.png',
+  author: "This is fun",
+  date: '28th October, 2024',
+  title: "Rocket's Birthday Countdown",
+  description: "Counting down the days to Rocket's big day!",
+  image: `${process.env.PUBLIC_URL}/Day1Pic.jpg`,
+  authorAvatar: `${process.env.PUBLIC_URL}/Day1Pic.jpg`,
 }
 
 const TitleComponent = ({ title, avatar }) => (
   <div className="flex items-center space-x-2">
     <img
       src={avatar}
-      height="20"
-      width="20"
       alt="thumbnail"
-      className="rounded-full border-2 border-white"
+      className="w-5 h-5 rounded-full border-2 border-white object-cover"
+      onError={(e) => {
+        console.error("Error loading avatar:", avatar);
+        e.target.src = 'https://placehold.co/20x20';
+      }}
     />
-    <p>{title}</p>
+    <p className="text-sm">{title}</p>
   </div>
-)
+);
 
 export default BirthdayCountdownWrapper
