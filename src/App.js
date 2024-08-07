@@ -6,7 +6,7 @@ const BirthdayCountdown = () => {
   const [secondsLeft, setSecondsLeft] = useState(() => {
     const now = new Date();
     const currentYear = now.getFullYear();
-    let birthdayDate = new Date(`October 28, ${currentYear} 00:00:00`);
+    let birthdayDate = new Date(currentYear, 9, 28, 6, 0, 0); // October 28th at 6:00 AM
     
     if (now > birthdayDate) {
       birthdayDate.setFullYear(currentYear + 1);
@@ -71,6 +71,13 @@ const BirthdayCountdown = () => {
             style={{animationDelay: `${index * 0.2}s`}} 
           />
         ))}
+      </div>
+      <div className="mt-8 max-w-full">
+      <img 
+          src={`${process.env.PUBLIC_URL}/Day1Pic.jpg`} 
+          alt="Birthday celebration" 
+          style={{width: '300px', border: 'none'}}
+        />
       </div>
     </div>
   );
