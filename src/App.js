@@ -38,19 +38,20 @@ const BirthdayCountdown = () => {
   const minutes = Math.floor((secondsLeft % (60 * 60)) / 60)
   const seconds = secondsLeft % 60
 
-  const cakeColors = [
-    'text-red-500',
-    'text-blue-500',
-    'text-green-500',
-    'text-yellow-500',
-    'text-purple-500',
-  ]
+const cakeColors = [
+  'text-red-500',
+  'text-blue-500',
+  'text-green-500',
+  'text-yellow-500',
+  'text-purple-500',
+  'text-pink-500', // 🎂 extra cake for Rocket turning 6
+]
 
-  const coloredName = 'Rocket'.split('').map((letter, index) => (
-    <span key={index} className={cakeColors[index % cakeColors.length]}>
-      {letter}
-    </span>
-  ))
+const coloredName = 'Rocket'.split('').map((letter, index) => (
+  <span key={index} className={cakeColors[index]}>
+    {letter}
+  </span>
+))
 
   return (
     <>
