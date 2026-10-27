@@ -1,5 +1,6 @@
 import { Cake } from 'lucide-react'
-import React, { useEffect, useState } from 'react'
+import { motion } from 'framer-motion'
+import React, { useEffect, useRef, useState } from 'react'
 import Confetti from 'react-confetti'
 import { FollowerPointerCard } from './components/ui/following-pointer'
 import { AuroraBackground } from './lib/background'
@@ -8,7 +9,7 @@ const BirthdayCountdown = () => {
   const [secondsLeft, setSecondsLeft] = useState(() => {
     const now = new Date()
     const currentYear = now.getFullYear()
-    let birthdayDate = new Date(currentYear, 9, 28, 6, 0, 0) // October 28th at 6:00 AM
+    let birthdayDate = new Date(currentYear, 9, 28, 18, 30, 0) // October 28th at 6:30 PM
 
     if (now > birthdayDate) {
       birthdayDate.setFullYear(currentYear + 1)
@@ -19,6 +20,24 @@ const BirthdayCountdown = () => {
   })
 
   const [isBirthday, setIsBirthday] = useState(false)
+  const [poppingIdx, setPoppingIdx] = useState(null)
+  const popTimer = useRef(null)
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    function schedulePop() {
+      popTimer.current = setTimeout(() => {
+        const idx = Math.floor(Math.random() * pokemon.length)
+        setPoppingIdx(idx)
+        setTimeout(() => {
+          setPoppingIdx(null)
+          schedulePop()
+        }, 700)
+      }, 1200 + Math.random() * 2200)
+    }
+    schedulePop()
+    return () => clearTimeout(popTimer.current)
+  }, [])
 
   useEffect(() => {
     if (secondsLeft <= 0) {
@@ -44,7 +63,18 @@ const cakeColors = [
   'text-green-500',
   'text-yellow-500',
   'text-purple-500',
-  'text-pink-500', // 🎂 extra cake for Rocket turning 6
+  'text-pink-500',
+  'text-orange-500',
+]
+
+const pokemon = [
+  { id: 25,  name: 'Pikachu' },
+  { id: 6,   name: 'Charizard' },
+  { id: 1,   name: 'Bulbasaur' },
+  { id: 7,   name: 'Squirtle' },
+  { id: 150, name: 'Mewtwo' },
+  { id: 133, name: 'Eevee' },
+  { id: 94,  name: 'Gengar' },
 ]
 
 const coloredName = 'Rocket'.split('').map((letter, index) => (
@@ -93,12 +123,29 @@ const coloredName = 'Rocket'.split('').map((letter, index) => (
             />
           ))}
         </div>
-        <div className="mt-8 max-w-full">
-        <img
-            src={`${process.env.PUBLIC_URL}/Day1Pic.jpg`}
-            alt="Birthday celebration"
-            className="mx-auto w-[300px] rounded-lg border-none"
-          />
+        <div className="mt-8 flex flex-wrap justify-center gap-4">
+          {pokemon.map((p, i) => (
+            <motion.div
+              key={p.id}
+              className="flex flex-col items-center cursor-pointer"
+              animate={poppingIdx === i
+                ? { y: [0, -55, 0], scale: [1, 1.5, 1], rotate: [0, -14, 14, 0] }
+                : { y: [0, -(6 + i * 2), 0] }
+              }
+              transition={poppingIdx === i
+                ? { duration: 0.65, ease: 'easeOut' }
+                : { duration: 2 + i * 0.3, repeat: Infinity, ease: 'easeInOut', delay: i * 0.2 }
+              }
+              whileHover={{ scale: 1.35, y: -14, transition: { duration: 0.2 } }}
+            >
+              <img
+                src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${p.id}.png`}
+                alt={p.name}
+                className="w-20 h-20 sm:w-24 sm:h-24 drop-shadow-lg"
+              />
+              <span className="text-xs font-semibold mt-1 text-gray-700">{p.name}</span>
+            </motion.div>
+          ))}
         </div>
       </div>
     </>
@@ -125,7 +172,7 @@ function BirthdayCountdownWrapper() {
 
 const blogContent = {
   author: "This is fun",
-  date: '28th October, 2024',
+  date: '28th October, 2026',
   title: "Rocket's Birthday Countdown",
   description: "Counting down the days to Rocket's big day!",
   image: `${process.env.PUBLIC_URL}/Day1Pic.jpg`,
